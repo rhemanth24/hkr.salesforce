@@ -1,0 +1,26 @@
+<!--
+  @File Name          : ACChatService.cmp
+  @Description        : 
+  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Group              : 
+  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Last Modified On   : 05-17-2021
+  @Modification Log   : 
+  Ver       Date            Author      		    Modification
+  1.0    11/16/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+-->
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require scripts="{!join(',',
+        $Resource.AmazonConnectChatInterface,
+        $Resource.ACChat)
+        }" afterScriptsLoaded="{!c.afterScriptsLoaded}" />
+    <aura:attribute name="instanceId" type="String" />
+    <aura:attribute name="contactFlowId" type="String" />
+    <aura:attribute name="APIGateway" type="String" />
+    <aura:attribute name="InitiationIcon" type="String" />
+    <aura:attribute name="Region" type="String" />
+    <aura:attribute name="PrimaryColor" type="String" />
+    <aura:attribute name="ChatForm" type="String" />
+    <aura:attribute name="Description" type="String" />
+    <div id="root"></div>
+</aura:component>

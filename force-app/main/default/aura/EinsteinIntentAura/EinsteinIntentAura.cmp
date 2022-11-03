@@ -1,0 +1,6 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <div>
+        <c:einsteinIntentlwc></c:einsteinIntentlwc> 
+    </div> 
+    
+</aura:component>

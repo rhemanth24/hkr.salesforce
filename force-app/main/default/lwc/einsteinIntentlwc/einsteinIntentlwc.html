@@ -1,0 +1,85 @@
+<template>
+    <template if:true={isLoaded}>
+        <lightning-spinner 
+            alternative-text='Loading' 
+            size='large'>
+        </lightning-spinner>
+    </template>
+    <lightning-card variant='Narrow' icon-name='custom:custom9' title='Salesforce Einstein Intent API'>  
+      
+        <ol class="slds-list_ordered">
+            <li>
+                <div class="slds-box slds-theme_shade">
+                    <lightning-card variant='Narrow' title='Upload Dataset'> 
+                        <p class='slds-var-p-horizontal_small'>
+                            <lightning-file-upload 
+                                accept={acceptedFormats} 
+                                label='Attach CSV File' 
+                                multiple='multiple' 
+                                onuploadfinished={uploadFileHandler}>
+                            </lightning-file-upload>
+                        </p>
+                    </lightning-card>
+                </div>                
+            </li>
+            <li> 
+                <div class="slds-box slds-theme_shade">
+                    <lightning-card variant='Narrow' title='Create the Dataset'> 
+                        <p class='slds-var-p-horizontal_small'>
+                           <lightning-button variant="brand-outline" label="Create" title="Create" onclick={btnUploadDS} class="slds-m-left_x-small"></lightning-button>
+                        </p>
+                    </lightning-card>  
+                </div>
+            </li>
+            <li>
+                <div class="slds-box slds-theme_shade">
+                    <lightning-card variant='Narrow' title='Train the Dataset and Create Model'> 
+                        <p class='slds-var-p-horizontal_small'>
+                        <lightning-button variant="brand-outline" label="Train" title="Train" onclick={btnTrainDS} class="slds-m-left_x-small"></lightning-button>
+                        </p>
+                    </lightning-card>  
+                </div>
+            </li>
+            <li>
+              <!--  <lightning-layout>
+                    <lightning-layout-item padding="around-small"> -->
+                        <div class="slds-box slds-theme_shade">
+                            <lightning-card variant='Narrow' title='Enter the label for Prediction'> 
+                                <p class='slds-var-p-horizontal_small'>
+                                    <lightning-input type="text" label = "" onchange={handleInputChange}></lightning-input><br>
+                                    <lightning-button variant="brand-outline" label="Submit" title="" onclick={btnPredict} ></lightning-button>  <!--class="slds-m-left_x-small"-->                      
+                                </p>
+                            </lightning-card>  
+                        </div>
+                    </li>
+               <!--     </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout-item>   -->      
+                               
+                <template if:true={isIntentVisible}>
+                    <li> 
+                    <div class="slds-box slds-theme_shade">
+                        <lightning-card variant='Narrow' title='Prediction Results'> 
+                            <p class='slds-var-p-horizontal_small'>
+                              Prediction results are <strong>{intent}</strong> with probability <strong>{highProbability}</strong>                
+                            </p>
+                        </lightning-card>  
+                    </div>  
+                  </li>             
+           <!--     </lightning-layout-item> -->
+               <li> 
+                <div class="slds-box slds-theme_shade">
+                    <lightning-card variant='Narrow' title='API usage'> 
+                        <p class='slds-var-p-horizontal_small'>
+                            Predictions Used : {predictionsUsed} <br>
+                            Predictions Remaining : {predictionsRemaining} <br>
+                            Predictions Maximum : {predictionsMax}
+                        </p>
+                    </lightning-card>  
+                </div>
+               </li>
+            </template>
+            
+          </ol>
+    </lightning-card>
+    </template>

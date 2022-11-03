@@ -1,0 +1,10 @@
+<design:component label="AC Chat Service">
+    <design:attribute name="instanceId" label="Amazon Connect Instance Id" description="Amazon Connect Instance Id" placeholder="11111111-1111-1111-1111-111111111111" required="true"/>
+    <design:attribute name="contactFlowId" label="Contact Flow Id" description="Contact Flow Id" placeholder="22222222-2222-2222-2222-222222222222" required="true"/>
+    <design:attribute name="APIGateway" label="API Gateway" description="API Gateway ARN" placeholder="https://uniqueID.execute-api.region.amazonaws.com/Prod" required="true" />
+    <design:attribute name="InitiationIcon" label="Chat Icon" description="Initiation widget can be icon or button" placeholder="icon or button" required="true" />
+    <design:attribute name="Region" label="AWS Region" description="Amazon Conenct region" placeholder="us-east-1" required="true" />
+    <design:attribute name="PrimaryColor" label="Chat Widget Color" description="Chat Widget color" placeholder="blue" required="true" />
+    <design:attribute name="ChatForm" label="Chat Form" description="Enable Chat form" placeholder="true or false" required="true" /> 
+    <design:attribute name="Description" label="Chat Title" description="If chat form needed true or false" placeholder="Welcome to Amazon Connect Chat" required="true" />   
+</design:component>
