@@ -16,13 +16,8 @@ jobs:
       uses: actions/checkout@v2
     # - uses: actions/checkout@v2
     - name: Setup AUth
-      run: |
-        # mkdir sfdx
-        # wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJ -C sfdx --strip-components 1
-        # ./sfdx/install
+      run: |        
         echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-        sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername
-        # echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-        # sfdx force:auth:sfdxurl:store -f sfdx_auth -s
+        sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
     - name: Validate Source
       run: sfdx force:source:deploy --manifest=manifest/package.xml --checkonly --testlevel=NoTestRun -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}   
