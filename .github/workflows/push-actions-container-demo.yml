@@ -2,6 +2,7 @@ name: Deploy using SFDX Docker Container
 on: [push]
 jobs:
   SFDX-CLI-Validate:
+    name: "Run SFDX Container Validate"
     runs-on: ubuntu-latest
     container:
       image: salesforce/salesforcedx:latest-full
@@ -14,4 +15,3 @@ jobs:
       - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername
       - name: Validate Source
       - run: sfdx force:source:deploy --manifest=manifest/package.xml --checkonly --testlevel=NoTestRun -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
-      
