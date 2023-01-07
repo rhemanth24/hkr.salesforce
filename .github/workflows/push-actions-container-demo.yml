@@ -2,6 +2,7 @@ name: Deploy using SFDX Docker Container
 on: [push]
 jobs:
   SFDX-CLI-Validate:
+    name: "Run SFDX Container Validate"
     runs-on: ubuntu-latest
     container:
       image: salesforce/salesforcedx:latest-full
