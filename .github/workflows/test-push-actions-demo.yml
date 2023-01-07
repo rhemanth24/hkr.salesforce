@@ -1,0 +1,28 @@
+name: SFDX Validate
+
+on: [push]
+
+jobs:
+  sfdxvalidate:
+    name: "Run SFDX Validate"
+    runs-on: ubuntu-latest
+    container:
+      image: salesforce/salesforcedx:latest-full
+    # env:
+    #   CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
+    steps:
+    # Checks out a copy of your repository on the ubuntu-latest machine
+    - name: Checkout code
+      uses: actions/checkout@v2
+    # - uses: actions/checkout@v2
+    - name: Setup AUth
+      run: |
+        # mkdir sfdx
+        # wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJ -C sfdx --strip-components 1
+        # ./sfdx/install
+        echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+        sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername
+        # echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
+        # sfdx force:auth:sfdxurl:store -f sfdx_auth -s
+    - name: Validate Source
+      run: sfdx force:source:deploy --manifest=manifest/package.xml --checkonly --testlevel=NoTestRun -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}   
