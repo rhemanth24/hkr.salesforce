@@ -1,5 +1,5 @@
 name: SFDX-CLI Deploy from Repository
-on: [push]
+on: []
 jobs:
   SFDX-CLI-Deploy:
     runs-on: ubuntu-latest
