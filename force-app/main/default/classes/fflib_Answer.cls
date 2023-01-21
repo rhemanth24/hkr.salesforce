@@ -8,6 +8,7 @@
  *  @group Core
  */
  //Add new comment
+ //Add comment
 public interface fflib_Answer
 {
     /**
