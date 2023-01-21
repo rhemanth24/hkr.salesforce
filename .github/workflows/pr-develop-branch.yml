@@ -115,21 +115,14 @@ jobs:
             # Install SFDX scanner
             - name: 'Installing SFDX scanner'
               run: sfdx plugins:install @salesforce/sfdx-scanner
-
-            # Prior to setting up this workflow, you have to create a Github Secret
-            # that contains the sfdx url of the integration/qa org.
-
-            # The steps to generate the url are here 
-            # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_auth_sfdxurl.htm
-
-            # This URL can then be used with the sfdx auth:sfdxurl:store to authenticate
-            # the sfdx project in the repositry, against the org from which the URL
-            # was generated from. This works just like that, there's no need to create
-            # connected apps or any else. 
-            - name: Setup Auth
-                run: |
-                    echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-                    sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
+            
+            - name: 'Populat key'
+              shell: bash
+              run: |
+                  echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+            
+            - name: Setup AUth
+              run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             # this allows us to deploy only those changes, as opposed to deploying the entire branch. 
