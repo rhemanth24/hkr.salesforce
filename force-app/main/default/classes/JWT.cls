@@ -1,5 +1,6 @@
 public class JWT {
     
+    //jwt class for integration
     public String alg {get;set;}
     public String iss {get;set;}
     public String sub {get;set;}
