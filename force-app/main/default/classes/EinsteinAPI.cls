@@ -2,6 +2,7 @@
 Class Name : EinsteinAPI
 
 */
+//Adding comments
 public class EinsteinAPI {
     //Get all the values of apex properties from custom settings
     public static Einstein_Intent_API__c settings{
