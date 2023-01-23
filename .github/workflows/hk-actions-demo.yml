@@ -1,5 +1,5 @@
 # Unique name for this workflow
-name: hkr.salesforce validate branch
+name: hkr salesforce validate branch
 
 # Definition when the workflow should run
 on:
