@@ -16,5 +16,6 @@ public interface fflib_Answer
      *  @throws The exception to be thrown.
      *  @return The value to be returned.
      */
+    //object comments
     Object answer(fflib_InvocationOnMock invocation);
 }
