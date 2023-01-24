@@ -1,6 +1,6 @@
 name: SFDX Validate
 
-on: [push]
+on: []
 
 jobs:
   sfdxvalidate:
