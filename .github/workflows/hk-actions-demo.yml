@@ -116,18 +116,7 @@ jobs:
               run: sfdx plugins:install @salesforce/sfdx-scanner
 
             # Prior to setting up this workflow, you have to create a Github Secret
-            # that contains the sfdx url of the integration/qa org.
-
-            # The steps to generate the url are here 
-            # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_auth_sfdxurl.htm
-
-            # This URL can then be used with the sfdx auth:sfdxurl:store to authenticate
-            # the sfdx project in the repositry, against the org from which the URL
-            # was generated from. This works just like that, there's no need to create
-            # connected apps or any else. 
-
-            # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL
-            # so here we store the URL into a text file
+            
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash
               run: |
@@ -145,15 +134,7 @@ jobs:
                    sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .gitignore
                    echo "---package.xml generated---"
                    cat package/package.xml
-            # Now we can use the sfdx scanner to scan the code in the delta directory
-            # The output of the scan is stored in a file called apexScanResults.sarif
-
-            # The .sarif file can later be uploaded to github, so that we can see the 
-            # results of the scan directly from the PR.
-
-            # We do a check-only deploy and we only run the tests specified in the PR
-            # If the env variable does not equal 'all', we know that there is a list of
-            # tests that can be run
+            # Now we can use the sfdx scanner to scan the code in the delta directory            
 
             - name: 'Check-only deploy delta changes - run specified tests'
               if: ${{ env.APEX_TESTS != 'all' }}
