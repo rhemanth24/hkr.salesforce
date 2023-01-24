@@ -143,7 +143,7 @@ jobs:
               run: | 
                   mkdir changed-sources
              #     sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
-                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdeltaignore
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .gitignore
                    echo "---package.xml generated---"
                    cat package/package.xml
             # Now we can use the sfdx scanner to scan the code in the delta directory
