@@ -75,10 +75,7 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-            # Install SFDX scanner
-            - name: 'Installing SFDX scanner'
-              run: sfdx plugins:install @salesforce/sfdx-scanner
-
+            # Install SFDX scanner            
             # Prior to setting up this workflow, you have to create a Github Secret
             
             - name: 'Populate auth file with SFDX_URL secret of integration org'
@@ -95,7 +92,7 @@ jobs:
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources            
-                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .gitignore
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdeltaignore
                    echo "---package.xml generated---"
                    cat package/package.xml
             # Now we can use the sfdx scanner to scan the code in the delta directory            
@@ -111,5 +108,5 @@ jobs:
               run: |
                   sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunLocalTests  --json
             #sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
-            - name: 'Deploy destructive changes (if any)'
-              run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
+            #- name: 'Deploy destructive changes (if any)'
+            #  run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 

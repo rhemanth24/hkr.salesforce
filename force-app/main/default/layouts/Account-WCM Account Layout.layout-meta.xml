@@ -34,11 +34,7 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Industry</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>AnnualRevenue</field>
-            </layoutItems>
+            </layoutItems>            
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

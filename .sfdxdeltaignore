@@ -3,4 +3,4 @@
 force-app/main/default/settings/*.settings-meta.xml
 
 # Ignore page layouts
-force-app/main/default/settings/*.layout-meta.xml
+force-app/main/default/layouts/*.layout-meta.xml
