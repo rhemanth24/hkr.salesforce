@@ -38,3 +38,9 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
+
+# Ignore settings
+force-app/main/default/settings/*.settings-meta.xml
+
+# Ignore page layouts
+force-app/main/default/settings/*.layout-meta.xml
