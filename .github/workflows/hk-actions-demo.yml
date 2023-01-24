@@ -61,10 +61,7 @@ jobs:
                   tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
-            # Then we install the SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
-            # This is an awesome plugin that allows us to extract a package.xml with the metadata
-            # that has changed between commits. I highly recommend going over the github readme 
-            # for more information on how this works.
+            # Then we install the SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta            
 
             - name: 'Installing sfdx git delta'
               run: | 

@@ -100,11 +100,7 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CustomerPriority__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SLAExpirationDate__c</field>
-            </layoutItems>            
+            </layoutItems>                       
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Active__c</field>
