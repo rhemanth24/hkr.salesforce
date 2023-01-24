@@ -19,5 +19,6 @@ public interface fflib_Answer
      *  @return The value to be returned.
      */
     //object comments
+    //adding new comments
     Object answer(fflib_InvocationOnMock invocation);
 }

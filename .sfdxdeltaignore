@@ -1,6 +1,9 @@
 # This file is used for Git repositories to specify intentionally untracked files that Git should ignore. 
+# Ignore Github jobs
+.github/workflows
+
 # Ignore settings
 force-app/main/default/settings/*.settings-meta.xml
 
 # Ignore page layouts
-force-app/main/default/settings/*.layout-meta.xml
+force-app/main/default/layouts/*.layout-meta.xml

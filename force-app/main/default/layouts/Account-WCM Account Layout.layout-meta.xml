@@ -34,11 +34,7 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Industry</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>AnnualRevenue</field>
-            </layoutItems>
+            </layoutItems>            
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -104,11 +100,7 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CustomerPriority__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SLAExpirationDate__c</field>
-            </layoutItems>            
+            </layoutItems>                       
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Active__c</field>
@@ -118,11 +110,7 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>SLA__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SLASerialNumber__c</field>
-            </layoutItems>
+            </layoutItems>           
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>UpsellOpportunity__c</field>

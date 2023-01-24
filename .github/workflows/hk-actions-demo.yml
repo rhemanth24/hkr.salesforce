@@ -61,10 +61,7 @@ jobs:
                   tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
-            # Then we install the SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
-            # This is an awesome plugin that allows us to extract a package.xml with the metadata
-            # that has changed between commits. I highly recommend going over the github readme 
-            # for more information on how this works.
+            # Then we install the SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta            
 
             - name: 'Installing sfdx git delta'
               run: | 
@@ -75,19 +72,16 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-            # Install SFDX scanner
-            - name: 'Installing SFDX scanner'
-              run: sfdx plugins:install @salesforce/sfdx-scanner
+            # Install SFDX scanner            
+            # Prior to setting up this workflow, you have to create a Github Secret            
 
-            # Prior to setting up this workflow, you have to create a Github Secret
-            
-            - name: 'Populate auth file with SFDX_URL secret of integration org'
+            - name: 'Populat key'
               shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
-            # Authenticate to org using the URL stored in the text file
-            - name: 'Authenticate to Integration Org'
-              run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+                  echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+            
+            - name: Setup AUth
+              run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             # this allows us to deploy only those changes, as opposed to deploying the entire branch. 
@@ -95,7 +89,7 @@ jobs:
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources            
-                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .gitignore
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdeltaignore
                    echo "---package.xml generated---"
                    cat package/package.xml
             # Now we can use the sfdx scanner to scan the code in the delta directory            
@@ -104,12 +98,12 @@ jobs:
               if: ${{ env.APEX_TESTS != 'all' }}
               run: |
                   echo ${{env.APEX_TESTS}}             
-                  sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --json
+                  sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
             # If the env variable equals all, we run all tests
             - name: 'Check-only deploy delta changes - run all tests'
               if: ${{ env.APEX_TESTS == 'all' }}
               run: |
-                  sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunLocalTests  --json
+                  sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
             #sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
-            - name: 'Deploy destructive changes (if any)'
-              run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
+            #- name: 'Deploy destructive changes (if any)'
+            #  run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 

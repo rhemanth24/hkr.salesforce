@@ -1,0 +1,60 @@
+name: sfdx deploy actions
+
+on:
+  workflow_call:
+
+jobs:
+
+    run-sfdx-actions:
+      runs-on: ubuntu-latest
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        steps:
+            # Now we install nodejs in the VM, and specify version 14
+            - uses: actions/setup-node@v3
+              with:
+                node-version: '14'
+            
+            - name: 'Checkout source code'
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0         
+            
+
+            - name: 'Read PR Body'
+              env:
+                # The pull request body is available through the github context object
+                # we put the body of the pull request in an env variable (only available to this step)
+                PR_BODY: ${{github.event.pull_request.body}}
+              
+              run: |
+                  echo $PR_BODY > ./pr_body.txt
+                  node ./parsePR.js              
+                  TESTS=$(cat testsToRun.txt)       
+                  echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
+                  
+            # Now Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                  mkdir ~/sfdx
+                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                  ~/sfdx/bin/sfdx version
+            # Then we install the SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta            
+
+            - name: 'Installing sfdx git delta'
+              run: | 
+                  echo y | sfdx plugins:install sfdx-git-delta
+                  sfdx plugins 
+            # Install java as it is required for the next step
+            - name: 'Installing java'
+              run: |
+                sudo apt-get update
+                sudo apt install default-jdk
+                
+            - name: 'Create delta packages for new, modified or deleted metadata'
+              run: | 
+                  mkdir changed-sources            
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdeltaignore
+                   echo "---package.xml generated---"
+                   cat package/package.xml
