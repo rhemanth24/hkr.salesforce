@@ -9,6 +9,7 @@
  */
  //Inteface class fflib
  //Adding new comment on class
+ 
 public interface fflib_Answer
 {
     /**
