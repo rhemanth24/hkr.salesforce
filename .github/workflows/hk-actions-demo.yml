@@ -73,15 +73,15 @@ jobs:
                 sudo apt-get update
                 sudo apt install default-jdk
             # Install SFDX scanner            
-            # Prior to setting up this workflow, you have to create a Github Secret
-            
-            - name: 'Populate auth file with SFDX_URL secret of integration org'
+            # Prior to setting up this workflow, you have to create a Github Secret            
+
+            - name: 'Populat key'
               shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
-            # Authenticate to org using the URL stored in the text file
-            - name: 'Authenticate to Integration Org'
-              run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+                  echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+            
+            - name: Setup AUth
+              run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             # this allows us to deploy only those changes, as opposed to deploying the entire branch. 
