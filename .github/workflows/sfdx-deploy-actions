@@ -1,10 +1,23 @@
 name: sfdx deploy actions
 
 on:
-  workflow_call:
+    # The workflow will run whenever an event happens on a pull request
+    pull_request:
+      # The events are that a PR is opened, or when a commit is pushed
+      # to a branch that has an existing pull request
+      types: [opened, synchronize]
+      # The branches filter allows to specify that this workflow should only
+      # run if the branch name is "develop". This way we prevent this workflow
+      # from running when PRs are opened on other branches
+      branches: [  ]
+      # We only care about changes to the force-app directory, which is the
+      # root directory of the sfdx project. This prevents the job from running
+      # when changing non-salesforce files (like this yml file).
+      paths:
+        - 'force-app/**'
+    workflow_call:
 
 jobs:
-
     run-sfdx-actions:
       runs-on: ubuntu-latest
         if: ${{ github.actor != 'dependabot[bot]' }}
