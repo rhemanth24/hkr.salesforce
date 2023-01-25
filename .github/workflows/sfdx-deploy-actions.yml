@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Job to run sfdx actions
     steps:
-      - uses: .github/actions/sfdx-actions
+      - uses: ./.github/actions/sfdx-actions
       - name: 'Populat key'
         shell: bash
         run: |
