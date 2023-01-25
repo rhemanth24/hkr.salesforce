@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Job to run sfdx actions
     steps:
-      - uses: actions/deploy-to-salesforce-action@v1
+      - uses: ./.github/actions/deploy-to-salesforce-action
       - name: 'Populat key'
         shell: bash
         run: |
