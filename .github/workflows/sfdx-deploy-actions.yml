@@ -13,9 +13,7 @@ jobs:
     name: Job to run sfdx actions
     steps:
       - name: setup node
-        uses: actions/setup-node@v2          
-      - name: 'Checkout source code'
-        uses: actions/checkout@v2          
+        uses: actions/setup-node@v2                
       - name: Use local action 
         uses: ./.github/actions/sfdx-actions
       - name: 'Populat key'
