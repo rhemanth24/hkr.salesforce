@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy-to-salesforce-org:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     container:
       image: salesforce/salesforcedx:latest-full
     steps:
@@ -23,6 +23,27 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Read PR Body'
+        env:
+          PR_BODY: ${{github.event.pull_request.body}}
+        run: |
+            echo $PR_BODY > ./pr_body.txt
+            node ./parsePR.js              
+            TESTS=$(cat testsToRun.txt)       
+            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
+      - name: 'Installing sfdx git delta'
+        run: | 
+            echo y | sfdx plugins:install sfdx-git-delta
+            sfdx plugins
+    # Install java as it is required for the next step
+      - name: 'Installing java'
+        run: sudo apt-get install openjdk-8-jdk
+      - name: 'Create delta packages for new, modified or deleted metadata'
+        run: | 
+            mkdir changed-sources
+            sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: 'populate key'
@@ -31,4 +52,15 @@ jobs:
             echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
       - name: Setup AUth
         run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername     
+      - name: 'Check-only deploy delta changes - run specified tests'
+        if: ${{ env.APEX_TESTS != 'all' }}
+        run: |
+            echo ${{env.APEX_TESTS}}
+            sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
+
+      # If the env variable equals all, we run all tests
+      - name: 'Check-only deploy delta changes - run all tests'
+        if: ${{ env.APEX_TESTS == 'all' }}
+        run: |
+            sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
       - run: echo "🍏 This job's status is ${{ job.status }}."
