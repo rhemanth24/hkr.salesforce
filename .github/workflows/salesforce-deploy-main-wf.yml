@@ -1,4 +1,4 @@
-name: sit deploy workflow
+name: DEMO sit deploy workflow
 
 on:
   workflow_dispatch:
@@ -7,5 +7,6 @@ jobs:
   deploy-to-sit:
     uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
     secrets:
-      sfdx_username: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
-      sfdx_password: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+      SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
+      clientid: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+      SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
