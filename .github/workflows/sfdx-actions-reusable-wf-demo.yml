@@ -1,13 +1,15 @@
-name: salesforce Git Actions Demo
+name: DEMO salesforce Git Actions
 
 run-name: ${{ github.actor }} is testing out GitHub Actions
 
 on:
   workflow_call:
     secrets:
-      sfdx_username:
+      SALESFORCE_DEVHUB_USERNAME:
         required: true
-      sfdx_password:
+      clientid:
+        required: true
+      SALESFORCE_JWT_SECRET_KEY:
         required: true
 
 jobs:
@@ -23,6 +25,12 @@ jobs:
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: 'populate key'
+        shell: bash
+        run: |
+            echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+      - name: Setup AUth
+        run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
