@@ -8,10 +8,7 @@ runs:
     - uses: actions/setup-node@v2
               with:
                 node-version: '14'
-    - name: 'Checkout source code'
-              uses: actions/checkout@v2
-              with:
-                fetch-depth: 0
+    
     - name: 'Read PR Body'
               env:                
                 PR_BODY: ${{github.event.pull_request.body}}

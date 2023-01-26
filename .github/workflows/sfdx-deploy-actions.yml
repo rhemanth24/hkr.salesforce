@@ -22,7 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Job to run sfdx actions
     steps:
-      - uses: ./.github/actions/sfdx-actions
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+      - name: Use local action 
+        uses: ./.github/actions/sfdx-actions
       - name: 'Populat key'
         shell: bash
         run: |
