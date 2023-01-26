@@ -1,11 +1,11 @@
-name: salesforce sit deploy workflow
+name: sit deploy workflow
 
 on:
   workflow_dispatch:
 
 jobs:
   deploy-to-sit:
-    uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml@main
+    uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
     secrets:
       sfdx_username: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
       sfdx_password: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
