@@ -1,27 +1,21 @@
 name: sfdx deploy actions
-
 on:
-    # The workflow will run whenever an event happens on a pull request
-    pull_request:
-      # The events are that a PR is opened, or when a commit is pushed
-      # to a branch that has an existing pull request
-      types: [opened, synchronize]
-      # The branches filter allows to specify that this workflow should only
-      # run if the branch name is "develop". This way we prevent this workflow
-      # from running when PRs are opened on other branches
-      branches: [ master ]
-      # We only care about changes to the force-app directory, which is the
-      # root directory of the sfdx project. This prevents the job from running
-      # when changing non-salesforce files (like this yml file).
-      paths:
-        - 'force-app/**'
-    workflow_call:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [ master ]
+    paths:
+      - 'force-app/**'
+  workflow_call:
 
 jobs:
   run-sfdx-actions:
     runs-on: ubuntu-latest
     name: Job to run sfdx actions
     steps:
+      - name: setup node
+        uses: actions/setup-node@v2
+          with:
+            node-version: '14'
       - name: 'Checkout source code'
         uses: actions/checkout@v2
           with:
@@ -31,8 +25,7 @@ jobs:
       - name: 'Populat key'
         shell: bash
         run: |
-            echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-        
+            echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key        
       - name: Setup AUth
         run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername        
       
