@@ -23,9 +23,7 @@ jobs:
     name: Job to run sfdx actions
     steps:
       - name: 'Checkout source code'
-        uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
+        uses: actions/checkout@v2         
       - name: Use local action 
         uses: ./.github/actions/sfdx-actions
       - name: 'Populat key'
