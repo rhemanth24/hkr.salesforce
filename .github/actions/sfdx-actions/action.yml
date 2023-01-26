@@ -1,22 +1,8 @@
 name: 'Deploy to Salesforce'
 description: 'Composite action to deploy to salesforce'
-inputs:
-outsputs:
 runs:
   using: "composite"
-  steps:
-    - uses: actions/setup-node@v2
-              with:
-                node-version: '14'
-    
-    - name: 'Read PR Body'
-              env:                
-                PR_BODY: ${{github.event.pull_request.body}}
-              run: |
-                  echo $PR_BODY > ./pr_body.txt
-                  node ./parsePR.js              
-                  TESTS=$(cat testsToRun.txt)       
-                  echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
+  steps:   
     - name: 'Install Salesforce CLI'
               run: |
                   wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz

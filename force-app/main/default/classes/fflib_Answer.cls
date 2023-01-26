@@ -7,9 +7,7 @@
  *  This interface must be implemented inside the test class and implement the call back method answer.
  *  @group Core
  */
-//comment to test cicd process
-//comment
-//test and adding comment
+//testing
  
 public interface fflib_Answer
 {
