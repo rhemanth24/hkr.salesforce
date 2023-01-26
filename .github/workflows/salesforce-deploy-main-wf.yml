@@ -1,6 +1,11 @@
 name: DEMO sit deploy workflow
 
 on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [ master ]
+    paths:
+      - 'force-app/**'
   workflow_dispatch:
 
 jobs:
