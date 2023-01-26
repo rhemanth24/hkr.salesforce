@@ -7,7 +7,7 @@ on:
     secrets:
       SALESFORCE_DEVHUB_USERNAME:
         required: true
-      clientid:
+      SALESFORCE_CONSUMER_KEY:
         required: true
       SALESFORCE_JWT_SECRET_KEY:
         required: true
@@ -30,8 +30,5 @@ jobs:
         run: |
             echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
       - name: Setup AUth
-        run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+        run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername     
       - run: echo "🍏 This job's status is ${{ job.status }}."
