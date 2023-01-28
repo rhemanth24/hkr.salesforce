@@ -7,8 +7,7 @@
  *  This interface must be implemented inside the test class and implement the call back method answer.
  *  @group Core
  */
-//testing
-//adding comment
+//test comment add
  
 public interface fflib_Answer
 {

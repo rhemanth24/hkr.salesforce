@@ -1,5 +1,5 @@
 name: Salesforce deploy main workflow
-
+run-name: ${{ github.ref}} is the branch
 on:
   pull_request:
     types: [opened, synchronize]
