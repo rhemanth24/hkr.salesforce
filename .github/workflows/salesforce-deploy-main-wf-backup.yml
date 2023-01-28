@@ -1,0 +1,17 @@
+name: DEMO sit deploy workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [ master ]
+    paths:
+      - 'force-app/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-to-sit:
+    uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
+    secrets:
+      SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
+      SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+      SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}

@@ -1,15 +1,34 @@
-name: DEMO sit deploy workflow
+name: Salesforce deploy main workflow
 
 on:
   pull_request:
     types: [opened, synchronize]
-    branches: [ master ]
+    branches: [ sit, uat, master ]
+    paths:
+      - 'force-app/**'
+  push:
+    branches: [ sit, uat, master ]
     paths:
       - 'force-app/**'
   workflow_dispatch:
 
 jobs:
-  deploy-to-sit:
+  sit-deploy-actions:
+    if: ${{ github.ref == 'refs/heads/sit' }}
+    uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
+    secrets:
+      SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
+      SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+      SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
+  uat-deploy-actions:
+    if: ${{ github.ref == 'refs/heads/uat' }}
+    uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
+    secrets:
+      SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
+      SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
+      SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
+  prod-deploy-actions:
+    if: ${{ github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/sfdx-actions-reusable-wf-demo.yml
     secrets:
       SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
