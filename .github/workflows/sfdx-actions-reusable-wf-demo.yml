@@ -87,7 +87,7 @@ jobs:
             sfdx force:source:deploy -x package/package.xml --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
       
       # Check only deploy changes to PROD and rull all tests
-      - name: 'Deploy delta changes - run all tests - sit/uat'
+      - name: 'Deploy delta changes - run all tests - PROD'
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && env.APEX_TESTS == 'all' }}
         run: |
             sfdx force:source:deploy -x package/package.xml --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
