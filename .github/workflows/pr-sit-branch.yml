@@ -14,6 +14,7 @@ jobs:
     uses: ./.github/workflows/salesforce-deploy-actions.yml
     with:
       DEPLOY_TYPE: CHECK-ONLY
+      DEPLOY_ORG: SIT
     secrets:
       SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
       SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }}
