@@ -8,6 +8,9 @@ on:
       DEPLOY_TYPE:
         required: true
         type: string
+      DEPLOY_ORG:
+        required: true
+        type: string
     secrets:
       SALESFORCE_DEVHUB_USERNAME:
         required: true
@@ -65,12 +68,15 @@ jobs:
         run: |
             echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
       
-      - name: 'Authorize Salesforce Org'
-        run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername     
+      - name: 'Authorize Salesforce Org'       
+        run: |
+            echo "🎉 Authorize Salesforce Org: ${{ inputs.DEPLOY_ORG }}" 
+            sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --setdefaultdevhubusername     
       
       - name: 'Check-only deploy delta changes - run specified tests'
         if: ${{ inputs.DEPLOY_TYPE == 'CHECK-ONLY' && env.APEX_TESTS != 'all' }}
         run: |
+            echo "🎉 CHECK-ONLY-DEPLOY on Salesforce Org: ${{ inputs.DEPLOY_ORG }}"
             echo ${{env.APEX_TESTS}}
             sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
 
@@ -78,11 +84,13 @@ jobs:
       - name: 'Check-only deploy delta changes - run all tests'
         if: ${{ inputs.DEPLOY_TYPE == 'CHECK-ONLY' && env.APEX_TESTS == 'all' }}
         run: |
+            echo "🎉 CHECK-ONLY-DEPLOY on Salesforce Org: ${{ inputs.DEPLOY_ORG }}" 
             sfdx force:source:deploy -x package/package.xml --checkonly --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
       
       - name: 'Deploy delta changes - run all tests'
         if: ${{ inputs.DEPLOY_TYPE == 'DEPLOY-ONLY' && env.APEX_TESTS == 'all' }}
         run: |
+            echo "🎉 DEPLOY on Salesforce Org: ${{ inputs.DEPLOY_ORG }}"
             sfdx force:source:deploy -x package/package.xml --testlevel RunLocalTests -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --json
       
       - run: echo "🍏 This job's status is ${{ job.status }}."
