@@ -56,7 +56,7 @@ jobs:
       
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: | 
-            sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdetlaignore
+            sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output . -i .sfdxdeltaignore
             echo "-----package.xml generated-----"
             cat package/package.xml
       
