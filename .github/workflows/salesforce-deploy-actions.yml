@@ -14,9 +14,7 @@ on:
       SALESFORCE_CONSUMER_KEY:
         required: true
       SALESFORCE_JWT_SECRET_KEY:
-        required: true
-      SALESFORCE_CHECK_ONLY_DEPLOY:
-        required: true
+        required: true      
 
 jobs:
   deploy-to-salesforce-org:
