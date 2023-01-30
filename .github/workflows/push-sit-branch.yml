@@ -1,0 +1,20 @@
+# Unique name for this workflow
+name: Deploy SIT branch to SIT org
+
+# Definition when the workflow should run
+on:
+  push:
+    branches: [ sit ]
+    paths:
+      - 'force-app/**'
+
+# Jobs to be executed
+jobs:
+  call-salesforce-deploy-actions-wf:
+    uses: ./.github/workflows/salesforce-deploy-actions.yml
+    with:
+      DEPLOY_TYPE: DEPLOY-ONLY
+    secrets:
+      SALESFORCE_DEVHUB_USERNAME: ${{ secrets.SALESFORCE_SIT_USERNAME }}
+      SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_SIT_CONSUMER_KEY }}
+      SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_SIT_JWT_SECRET_KEY }}
